@@ -65,7 +65,6 @@
             outline: 2px dashed #d7ccc8;
         }
 
-        /* Banner 樣式 - 已調高至 350px */
         .hero-banner {
             width: 100%;
             height: 350px;
@@ -155,7 +154,7 @@
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
@@ -164,7 +163,13 @@
         .card-header-row { display: flex; align-items: center; gap: 12px; }
         .card-icon-box { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
         .card-name { font-weight: 700; font-size: 1.1rem; color: var(--secondary-color); }
-        .card-desc { font-size: 0.85rem; color: #9e8d88; }
+        
+        /* 介紹與交通資訊樣式 */
+        .card-info { font-size: 0.85rem; color: #7b655f; line-height: 1.5; background: #fdfaf7; padding: 12px; border-radius: 12px; border-left: 4px solid var(--primary-color); }
+        .info-label { font-weight: bold; color: var(--primary-color); margin-bottom: 4px; display: block; }
+        .transport-box { font-size: 0.8rem; color: #8d6e63; border-top: 1px dashed var(--line-color); padding-top: 8px; margin-top: 8px; }
+        .transport-box b { color: var(--secondary-color); }
+        .transport-box i { width: 18px; color: var(--primary-color); }
 
         .image-container {
             border-radius: 4px;
@@ -178,6 +183,7 @@
             cursor: pointer;
             transition: 0.3s;
             border: 1px solid #eee;
+            margin-bottom: 5px; /* 與下方文字保持間距 */
         }
         .card:nth-child(even) .image-container { transform: rotate(2deg); }
         .image-container:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
@@ -188,15 +194,15 @@
             background: var(--primary-color);
             color: white;
             text-decoration: none;
-            padding: 12px;
-            border-radius: 15px;
+            padding: 10px;
+            border-radius: 12px;
             text-align: center;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: 0.2s;
             margin-top: auto;
         }
@@ -233,7 +239,6 @@
 <body>
 
 <div class="container">
-    <!-- 使用自定義 Banner.png 並增加高度 -->
     <div class="hero-banner">
         <img src="Banner.png" alt="我的自定義 Banner" onerror="this.src='https://placehold.co/800x600?text=Banner.png+Not+Found'"/>
         <div class="hero-overlay"></div>
@@ -257,12 +262,18 @@
                             <div class="card-icon-box" style="background:#eef7ee"><i class="fas fa-ship"></i></div>
                             <div>
                                 <div class="card-name">客運碼頭 (外港/氹仔)</div>
-                                <div class="card-desc">點擊下方按鈕開啟地圖導覽</div>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <span class="info-label"><i class="fas fa-info-circle"></i> 建議事項</span>
+                            從香港出發可搭乘<b>噴射飛航 (外港)</b> 或 <b>金光飛航 (氹仔)</b>。
+                            <div class="transport-box">
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>抵達後可直接前往酒店接駁巴士區，轉乘往新馬路或各大型娛樂場的免費巴士。
                             </div>
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <a href="https://www.google.com/maps/search/?api=1&query=澳門外港客運碼頭" target="_blank" class="nav-btn" style="flex:1; background:var(--accent-green); color:#3d4c39;"><i class="fas fa-map-marked-alt"></i> 外港</a>
-                            <a href="https://www.google.com/maps/search/?api=1&query=氹仔客運碼頭" target="_blank" class="nav-btn" style="flex:1; background:var(--accent-green); color:#3d4c39;"><i class="fas fa-map-marked-alt"></i> 氹仔</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=澳門外港客運碼頭" target="_blank" class="nav-btn" style="flex:1; background:var(--accent-green); color:#3d4c39;"><i class="fas fa-map-marked-alt"></i> 外港導覽</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=氹仔客運碼頭" target="_blank" class="nav-btn" style="flex:1; background:var(--accent-green); color:#3d4c39;"><i class="fas fa-map-marked-alt"></i> 氹仔導覽</a>
                         </div>
                     </div>
                 </div>
@@ -273,45 +284,77 @@
                 <span class="time-badge">AM 上午</span>
                 <span class="section-title">歷史城區漫步</span>
                 <div class="cards-grid">
+                    <!-- 大三巴 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#eef6ff"><i class="fas fa-archway"></i></div>
                             <div class="card-name">大三巴牌坊</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_st_pauls.png', '大三巴牌坊')">
                             <img src="macau_st_pauls.png" class="spot-illust" alt="大三巴牌坊" onerror="this.src='https://placehold.co/400x400?text=Ruins+of+St.+Paul'"/>
                         </div>
+                        <div class="card-info">
+                            <b>介紹：</b>澳門最著名的地標，原為聖保祿大教堂的前壁遺址，揉合了歐洲文藝復興與東方建築風格。
+                            <div class="transport-box">
+                                <i class="fas fa-bus"></i> <b>巴士：</b>3, 3A, 10, 10A (新馬路站下車步行)<br>
+                                <i class="fas fa-shuttle-van"></i> <b>發財車：</b>搭乘往「十六浦」或「英皇」的接駁車再步行約10分鐘。
+                            </div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=大三巴牌坊" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
+                    <!-- 戀愛巷 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#eef6ff"><i class="fas fa-heart"></i></div>
                             <div class="card-name">戀愛巷</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_love_lane.png', '戀愛巷')">
                             <img src="macau_love_lane.png" class="spot-illust" alt="戀愛巷" onerror="this.src='https://placehold.co/400x400?text=Love+Lane'"/>
                         </div>
+                        <div class="card-info">
+                            <b>介紹：</b>全長約50公尺的浪漫小巷，兩旁建築色彩粉嫩（粉紅與鮮黃），是熱門的攝影打卡聖地。
+                            <div class="transport-box">
+                                <i class="fas fa-walking"></i> <b>步行：</b>位於大三巴牌坊左側，步行僅需1分鐘。
+                            </div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=戀愛巷" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
-                    <!-- 補回玫瑰堂 -->
+                    <!-- 玫瑰堂 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#eef6ff"><i class="fas fa-church"></i></div>
                             <div class="card-name">玫瑰聖母堂</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_st_dominics.png', '玫瑰聖母堂')">
                             <img src="macau_st_dominics.png" class="spot-illust" alt="玫瑰聖母堂" onerror="this.src='https://placehold.co/400x400?text=St.Dominics'"/>
                         </div>
+                        <div class="card-info">
+                            <b>介紹：</b>擁有超過400年歷史，明亮黃色的外牆搭配綠色門窗，充滿細緻的巴洛克風格裝飾。
+                            <div class="transport-box">
+                                <i class="fas fa-walking"></i> <b>步行：</b>位於議事亭前地與大三巴之間，必經之路。
+                            </div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=玫瑰聖母堂" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
-                    <!-- 補回議事亭前地 -->
+                    <!-- 議事亭前地 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#eef6ff"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="card-name">議事亭前地</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_senado_square.png', '議事亭前地')">
                             <img src="macau_senado_square.png" class="spot-illust" alt="議事亭前地" onerror="this.src='https://placehold.co/400x400?text=Senado+Square'"/>
+                        </div>
+                        <div class="card-info">
+                            <b>介紹：</b>俗稱「噴水池」，地面鋪設黑白碎石組成的波浪圖案，周圍環繞著繽紛的南歐建築。
+                            <div class="transport-box">
+                                <i class="fas fa-bus"></i> <b>巴士：</b>所有經過「新馬路」的巴士皆可到達。<br>
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>由外港碼頭搭乘「英皇」或「十六浦」免費巴士。
+                            </div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=議事亭前地" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
@@ -328,11 +371,18 @@
                             <div class="card-icon-box" style="background:#fff5eb"><i class="fas fa-cookie-bite"></i></div>
                             <div>
                                 <div class="card-name">官也街美食巡禮</div>
-                                <div class="card-desc">一定要吃蛋塔和豬扒包喔！</div>
                             </div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_rua_do_cunha.png', '官也街美食')" style="transform: rotate(1deg); width: 100%;">
                             <img src="macau_rua_do_cunha.png" class="spot-illust" alt="官也街" style="max-height: 300px; object-fit: contain;" onerror="this.src='https://placehold.co/600x400?text=Rua+do+Cunha'"/>
+                        </div>
+                        <div class="card-info">
+                            <b>介紹：</b>澳門必吃美食一條街！聚集了安德魯蛋塔、誠昌水蟹粥、莫義記榴槤雪糕及各式豬扒包與手信。
+                            <div class="transport-box">
+                                <i class="fas fa-exchange-alt"></i> <b>跨區：</b>從澳門島（新馬路）搭巴士 <b>33</b> 或 <b>22</b> 往氹仔方向。<br>
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>搭乘往「銀河」或「威尼斯人」的接駁車，再經由天橋/自動步道步行約10分鐘。
+                            </div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=官也街" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽至官也街</a>
                     </div>
@@ -350,8 +400,16 @@
                             <div class="card-icon-box" style="background:#fff0f2"><i class="fas fa-broadcast-tower"></i></div>
                             <div class="card-name">巴黎人鐵塔</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_parisian.png', '巴黎人鐵塔')">
                             <img src="macau_parisian.png" class="spot-illust" alt="巴黎人" onerror="this.src='https://placehold.co/400x400?text=The+Parisian'"/>
+                        </div>
+                        <div class="card-info">
+                            <b>介紹：</b>按原比例1/2縮小的巴黎鐵塔，每晚都有精彩的燈光秀，氣氛浪漫。
+                            <div class="transport-box">
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>巴黎人/倫敦人接駁巴士。<br>
+                                <i class="fas fa-walking"></i> <b>步行：</b>從威尼斯人內部連通廊道步行約10分鐘。
+                            </div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=澳門巴黎人" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
@@ -361,30 +419,53 @@
                             <div class="card-icon-box" style="background:#fff0f2"><i class="fas fa-clock"></i></div>
                             <div class="card-name">倫敦人</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_londoner.png', '倫敦人')">
                             <img src="macau_londoner.png" class="spot-illust" alt="倫敦人" onerror="this.src='https://placehold.co/400x400?text=The+Londoner'"/>
                         </div>
+                        <div class="card-info">
+                            <b>介紹：</b>精緻重現倫敦大笨鐘與國會大廈，夜間金色外牆閃爍，非常壯觀。
+                            <div class="transport-box">
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>倫敦人/喜來登接駁巴士。
+                            </div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=澳門倫敦人" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
-                    <!-- 補回永利皇宮 -->
+                    <!-- 永利皇宮 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#fff0f2"><i class="fas fa-water"></i></div>
                             <div class="card-name">永利皇宮</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_wynn_palace.png', '永利皇宮纜車')">
                             <img src="macau_wynn_palace.png" class="spot-illust" alt="永利皇宮" onerror="this.src='https://placehold.co/400x400?text=Wynn+Palace'"/>
                         </div>
+                        <div class="card-info">
+                            <b>介紹：</b>必看！大型噴泉水舞表演，還可以搭乘免費觀光纜車俯瞰水舞。
+                            <div class="transport-box">
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>永利皇宮接駁巴士。<br>
+                                <i class="fas fa-train"></i> <b>輕軌：</b>「路氹東站」出站即達。
+                            </div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=永利皇宮" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
-                    <!-- 補回威尼斯人 -->
+                    <!-- 威尼斯人 -->
                     <div class="card">
                         <div class="card-header-row">
                             <div class="card-icon-box" style="background:#fff0f2"><i class="fas fa-ship"></i></div>
                             <div class="card-name">威尼斯人</div>
                         </div>
+                        <!-- 圖片改為上方 -->
                         <div class="image-container" onclick="openLB('macau_venetian.png', '威尼斯人大運河')">
                             <img src="macau_venetian.png" class="spot-illust" alt="威尼斯人" onerror="this.src='https://placehold.co/400x400?text=The+Venetian'"/>
+                        </div>
+                        <div class="card-info">
+                            <b>介紹：</b>大運河購物中心充滿威尼斯風情，室內也有藍天與貢多拉船，購物與拍照皆宜。
+                            <div class="transport-box">
+                                <i class="fas fa-bus-alt"></i> <b>發財車：</b>威尼斯人免費接駁巴士。<br>
+                                <i class="fas fa-walking"></i> <b>步行：</b>從倫敦人/巴黎人皆有室內天橋相連。
+                            </div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=澳門威尼斯人" target="_blank" class="nav-btn"><i class="fas fa-location-arrow"></i> 導覽</a>
                     </div>
@@ -401,9 +482,12 @@
                             <div class="card-icon-box" style="background:#eef7ee"><i class="fas fa-home"></i></div>
                             <div class="card-name">返回碼頭</div>
                         </div>
+                        <div class="card-info">
+                            <b>提示：</b>各大酒店皆有免費穿梭巴士直達外港碼頭或氹仔碼頭，建議預留交通與通關時間。
+                        </div>
                         <div style="display: flex; gap: 10px;">
-                            <a href="https://www.google.com/maps/search/?api=1&query=氹仔客運碼頭" target="_blank" class="nav-btn" style="flex:1;"><i class="fas fa-sign-out-alt"></i> 氹仔碼頭</a>
-                            <a href="https://www.google.com/maps/search/?api=1&query=澳門外港客運碼頭" target="_blank" class="nav-btn" style="flex:1;"><i class="fas fa-sign-out-alt"></i> 外港碼頭</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=氹仔客運碼頭" target="_blank" class="nav-btn" style="flex:1;"><i class="fas fa-sign-out-alt"></i> 往氹仔碼頭</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=澳門外港客運碼頭" target="_blank" class="nav-btn" style="flex:1;"><i class="fas fa-sign-out-alt"></i> 往外港碼頭</a>
                         </div>
                     </div>
                 </div>
