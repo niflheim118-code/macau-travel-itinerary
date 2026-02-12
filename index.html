@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>澳門一日遊 • 日式旅記</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>澳門一日遊</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Zen+Maru+Gothic:wght@400;700&display=swap');
 
         :root {
             --bg-color: #fdfbf7;
             --paper-color: #fffefb;
-            --primary-color: #d68c45; /* Warm Orange/Brown */
-            --accent-blue: #6b8cce;
-            --accent-green: #7fb069;
-            --accent-pink: #e08e98;
-            --text-color: #4a4a4a;
-            --line-color: #e0dcd5;
+            --primary-color: #e69b5c; /* 貓咪橘 */
+            --secondary-color: #8d6e63; /* 咖啡色 */
+            --accent-blue: #7da7d9;
+            --accent-pink: #f0aeb9;
+            --text-color: #5d4037;
+            --line-color: #eaddcf;
         }
 
         body {
@@ -27,85 +27,83 @@
             padding: 20px;
             display: flex;
             justify-content: center;
-            background-image: radial-gradient(#e8e4dc 1px, transparent 1px);
-            background-size: 20px 20px;
+            /* 貓掌背景紋理 */
+            background-image: radial-gradient(#e8e4dc 15%, transparent 16%), radial-gradient(#e8e4dc 15%, transparent 16%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
         }
 
         .container {
             width: 100%;
-            max-width: 800px; /* 16:9 aspect ratio approximation for content width */
+            max-width: 600px; /* 手機閱讀最佳寬度 */
             background: var(--paper-color);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(93, 64, 55, 0.1);
+            padding: 30px;
             position: relative;
             overflow: hidden;
-            border: 8px solid #fff;
-            outline: 1px solid #ddd;
+            border: 6px solid #fff;
+            outline: 1px dashed #d7ccc8;
         }
 
-        /* Japanese Stamp Effect */
-        .stamp {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 80px;
-            height: 80px;
-            border: 3px solid #c94e4e;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #c94e4e;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transform: rotate(-15deg);
-            opacity: 0.8;
-            z-index: 10;
-            background: rgba(255,255,255,0.8);
-            box-shadow: 0 0 0 2px #fff inset;
+        /* 頂部貓咪裝飾 */
+        .header-cat {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: -10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
         h1 {
             text-align: center;
-            color: var(--primary-color);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin: 10px 0 5px 0;
             letter-spacing: 0.1em;
-            border-bottom: 2px dashed var(--primary-color);
-            display: inline-block;
-            padding-bottom: 10px;
             position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+            z-index: 2;
         }
 
         .subtitle {
             text-align: center;
             font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 40px;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            opacity: 0.8;
+            border-bottom: 2px dotted var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         /* Timeline Layout */
         .timeline {
             position: relative;
-            padding-left: 30px;
+            padding-left: 20px; /* 手機版縮減左側空間 */
         }
 
         .timeline::before {
             content: '';
             position: absolute;
-            left: 15px;
+            left: 8px;
             top: 10px;
             bottom: 10px;
-            width: 4px;
-            background: repeating-linear-gradient(to bottom, var(--line-color) 0, var(--line-color) 10px, transparent 10px, transparent 20px);
+            width: 3px;
+            background: repeating-linear-gradient(to bottom, var(--line-color) 0, var(--line-color) 8px, transparent 8px, transparent 16px);
             border-radius: 2px;
         }
 
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
         }
 
@@ -113,262 +111,312 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            position: relative;
         }
 
         .time-badge {
             background: var(--primary-color);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 4px 12px;
+            border-radius: 15px;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
             z-index: 2;
+            white-space: nowrap;
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-left: 15px;
+            margin-left: 10px;
             color: var(--text-color);
         }
 
-        /* Cards Grid */
+        /* 貓咪插圖貼紙 */
+        .cat-sticker {
+            position: absolute;
+            font-size: 2.5rem;
+            z-index: 1;
+            opacity: 0.9;
+            filter: drop-shadow(2px 2px 0px rgba(255,255,255,1));
+        }
+
+        /* Cards Grid - 手機優先設計 */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-left: 10px;
+            grid-template-columns: 1fr; /* 手機預設單欄 */
+            gap: 12px;
+            margin-left: 5px;
         }
 
         .card {
             background: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex; /* 改為 Flex 佈局，適合手機橫向閱讀 */
+            align-items: center;
             transition: transform 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
             position: relative;
-            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transform: scale(1.02);
             border-color: var(--primary-color);
         }
 
-        .card-icon {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            display: block;
+        .card-icon-box {
+            width: 40px;
+            height: 40px;
+            background: #fff8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .card-content {
+            flex-grow: 1;
         }
 
         .card-name {
             font-weight: bold;
             font-size: 1rem;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             display: block;
+            color: #444;
         }
 
         .card-desc {
-            font-size: 0.75rem;
-            color: #777;
-            line-height: 1.4;
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.3;
         }
 
-        /* Specific Colors for Sections */
+        /* Specific Colors & Cats */
         .morning .time-badge { background-color: var(--accent-blue); }
-        .morning .card-icon { color: var(--accent-blue); }
+        .morning .card-icon-box { color: var(--accent-blue); background: #f0f7ff; }
         
         .noon .time-badge { background-color: var(--primary-color); }
-        .noon .card-icon { color: var(--primary-color); }
+        .noon .card-icon-box { color: var(--primary-color); background: #fff5eb; }
 
         .night .time-badge { background-color: var(--accent-pink); }
-        .night .card-icon { color: var(--accent-pink); }
+        .night .card-icon-box { color: var(--accent-pink); background: #fff0f2; }
 
-        /* Illustrations (CSS Shapes/Icons) */
-        .illustration-decor {
-            position: absolute;
-            opacity: 0.15;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .decor-church {
-            top: 100px;
-            right: 20px;
-            font-size: 8rem;
-            color: var(--accent-blue);
-        }
-        
-        .decor-food {
-            top: 400px;
-            left: -20px;
-            font-size: 7rem;
-            color: var(--primary-color);
-            transform: rotate(15deg);
-        }
-
-        .decor-tower {
-            bottom: 50px;
-            right: 0px;
-            font-size: 9rem;
-            color: var(--accent-pink);
-        }
-
-        /* Connection Lines */
-        .arrow-down {
+        /* Path Connector (Paw Prints) */
+        .path-connector {
             text-align: center;
             color: var(--line-color);
-            font-size: 1.2rem;
-            margin: 10px 0;
-            padding-left: 15px;
+            font-size: 1rem;
+            margin: 15px 0;
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
         }
+        
+        .paw {
+            color: var(--secondary-color);
+            opacity: 0.3;
+            font-size: 0.8rem;
+            transform: rotate(15deg);
+        }
+        .paw:nth-child(even) { transform: rotate(-15deg); margin-left: 10px; }
+        .paw:nth-child(odd) { margin-right: 10px; }
 
         /* Footer */
         .footer {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem;
+            border-top: 2px dashed #eee;
+            font-size: 0.85rem;
             color: #aaa;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container { padding: 20px; }
-            .cards-grid { grid-template-columns: 1fr 1fr; }
-            h1 { font-size: 1.8rem; }
+        /* Media Query for Tablet/Desktop */
+        @media (min-width: 600px) {
+            .container { padding: 40px; }
+            .cards-grid { grid-template-columns: 1fr 1fr; } /* 電腦版雙欄 */
+            .card { flex-direction: column; text-align: center; padding: 20px; }
+            .card-icon-box { margin-right: 0; margin-bottom: 10px; width: 50px; height: 50px; font-size: 1.5rem; }
+            .card-full-width { grid-column: span 2; flex-direction: row; text-align: left; }
+            .card-full-width .card-icon-box { margin-right: 15px; margin-bottom: 0; }
         }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="stamp">澳門<br>旅記</div>
+    <!-- Header Cat -->
+    <div class="header-cat">
+        <i class="fas fa-cat"></i>
+    </div>
     
-    <h1>澳門一日散策</h1>
-    <div class="subtitle">Macau 1-Day Trip • 溫暖日系攻略</div>
-
-    <!-- Background Decors -->
-    <i class="fas fa-church illustration-decor decor-church"></i>
-    <i class="fas fa-utensils illustration-decor decor-food"></i>
-    <i class="fas fa-landmark illustration-decor decor-tower"></i>
+    <h1>澳門一日遊</h1>
+    <div class="subtitle">跟著貓咪去散步 • Neko Trip</div>
 
     <div class="timeline">
         
         <!-- Morning Section -->
         <div class="section morning">
+            <!-- 裝飾貓：伸懶腰 -->
+            <div class="cat-sticker" style="top: -15px; right: 10px; transform: rotate(10deg); color: var(--accent-blue);">
+                <i class="fas fa-cat"></i>
+            </div>
+
             <div class="section-header">
-                <span class="time-badge">AM 上午 • 歷史城區</span>
-                <span class="section-title">漫步舊時光</span>
+                <span class="time-badge">AM 上午</span>
+                <span class="section-title">歷史城區散策</span>
             </div>
             <div class="cards-grid">
                 <div class="card">
-                    <i class="fas fa-ship card-icon"></i>
-                    <span class="card-name">外港碼頭</span>
-                    <span class="card-desc">抵達澳門，開啟旅程起點</span>
+                    <div class="card-icon-box"><i class="fas fa-ship"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">外港碼頭</span>
+                        <span class="card-desc">抵達澳門</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-spa card-icon"></i>
-                    <span class="card-name">新葡京</span>
-                    <span class="card-desc">金蓮花地標，富麗堂皇</span>
+                    <div class="card-icon-box"><i class="fas fa-spa"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">新葡京</span>
+                        <span class="card-desc">金蓮花地標</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-place-of-worship card-icon"></i>
-                    <span class="card-name">玫瑰聖母堂</span>
-                    <span class="card-desc">鵝黃色巴洛克建築，溫柔典雅</span>
+                    <div class="card-icon-box"><i class="fas fa-church"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">玫瑰聖母堂</span>
+                        <span class="card-desc">鵝黃色教堂</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-archway card-icon"></i>
-                    <span class="card-name">大三巴 & 戀愛巷</span>
-                    <span class="card-desc">世界遺產牌坊與粉紅浪漫巷弄</span>
+                    <div class="card-icon-box"><i class="fas fa-archway"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">大三巴 & 戀愛巷</span>
+                        <span class="card-desc">必拍牌坊與粉紅巷</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="arrow-down"><i class="fas fa-chevron-down"></i> 搭車前往氹仔</div>
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw"></i>
+            <i class="fas fa-paw paw"></i>
+            <span style="font-size: 0.7rem; color: #999;">前往氹仔</span>
+        </div>
 
         <!-- Noon Section -->
         <div class="section noon">
+            <!-- 裝飾貓：貪吃貓 -->
+            <div class="cat-sticker" style="top: 0px; right: 0px; transform: rotate(-10deg); color: var(--primary-color);">
+                <i class="fas fa-fish"></i> <i class="fas fa-cat" style="font-size: 0.8em;"></i>
+            </div>
+
             <div class="section-header">
-                <span class="time-badge">PM 午餐 • 官也街</span>
-                <span class="section-title">味蕾的饗宴</span>
+                <span class="time-badge">PM 午餐</span>
+                <span class="section-title">官也街覓食</span>
             </div>
             <div class="cards-grid">
-                <div class="card" style="grid-column: span 2;">
-                    <i class="fas fa-utensils card-icon"></i>
-                    <span class="card-name">官也街美食巡禮</span>
-                    <span class="card-desc">
-                        <i class="fas fa-check" style="font-size:0.7em; color:var(--primary-color)"></i> 葡式蛋塔 (安德魯/瑪嘉烈)<br>
-                        <i class="fas fa-check" style="font-size:0.7em; color:var(--primary-color)"></i> 大利來記豬扒包<br>
-                        <i class="fas fa-check" style="font-size:0.7em; color:var(--primary-color)"></i> 誠昌飯店水蟹粥
-                    </span>
-                </div>
-                <div class="card">
-                    <i class="fas fa-store card-icon"></i>
-                    <span class="card-name">手信採買</span>
-                    <span class="card-desc">杏仁餅、肉乾，帶點伴手禮</span>
+                <div class="card card-full-width">
+                    <div class="card-icon-box"><i class="fas fa-utensils"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">美食清單</span>
+                        <span class="card-desc">
+                            • 葡式蛋塔 (安德魯/瑪嘉烈)<br>
+                            • 大利來記豬扒包<br>
+                            • 誠昌飯店水蟹粥
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="arrow-down"><i class="fas fa-chevron-down"></i> 步行或接駁車至路氹</div>
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw"></i>
+            <i class="fas fa-paw paw"></i>
+            <span style="font-size: 0.7rem; color: #999;">前往路氹</span>
+        </div>
 
         <!-- Night Section -->
         <div class="section night">
+            <!-- 裝飾貓：看夜景 -->
+            <div class="cat-sticker" style="top: -10px; right: 20px; color: var(--accent-pink);">
+                <i class="fas fa-moon" style="font-size: 0.6em; margin-right:5px;"></i><i class="fas fa-cat"></i>
+            </div>
+
             <div class="section-header">
-                <span class="time-badge">PM 晚上 • 路氹金光大道</span>
-                <span class="section-title">璀璨不夜城</span>
+                <span class="time-badge">PM 晚上</span>
+                <span class="section-title">奢華酒店巡禮</span>
             </div>
             <div class="cards-grid">
                 <div class="card">
-                    <i class="fas fa-gopuram card-icon"></i>
-                    <span class="card-name">威尼斯人</span>
-                    <span class="card-desc">大運河購物中心，貢多拉船</span>
+                    <div class="card-icon-box"><i class="fas fa-gopuram"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">威尼斯人</span>
+                        <span class="card-desc">運河與貢多拉</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-broadcast-tower card-icon"></i>
-                    <span class="card-name">巴黎人</span>
-                    <span class="card-desc">巴黎鐵塔夜景，浪漫燈光秀</span>
+                    <div class="card-icon-box"><i class="fas fa-broadcast-tower"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">巴黎人</span>
+                        <span class="card-desc">鐵塔燈光秀</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-clock card-icon"></i>
-                    <span class="card-name">倫敦人</span>
-                    <span class="card-desc">大笨鐘與英倫風情外牆</span>
+                    <div class="card-icon-box"><i class="fas fa-clock"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">倫敦人</span>
+                        <span class="card-desc">英倫大笨鐘</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-tram card-icon"></i>
-                    <span class="card-name">永利皇宮</span>
-                    <span class="card-desc">免費觀光纜車 & 音樂噴泉</span>
+                    <div class="card-icon-box"><i class="fas fa-tram"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">永利皇宮</span>
+                        <span class="card-desc">免費纜車</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-gem card-icon"></i>
-                    <span class="card-name">美高梅</span>
-                    <span class="card-desc">珠寶盒外觀，現代藝術感</span>
+                    <div class="card-icon-box"><i class="fas fa-gem"></i></div>
+                    <div class="card-content">
+                        <span class="card-name">美高梅</span>
+                        <span class="card-desc">珠寶盒建築</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="arrow-down"><i class="fas fa-ship"></i></div>
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw"></i>
+            <i class="fas fa-paw paw"></i>
+        </div>
 
         <!-- End Section -->
         <div class="section">
-            <div class="section-header" style="justify-content: center;">
-                <span class="time-badge" style="background:#555;">END 返程</span>
-            </div>
-            <div style="text-align: center; font-size: 0.9rem; color: #666;">
-                帶著滿滿的回憶，搭乘噴射飛航返回香港
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; text-align: center; border: 2px dashed #ddd;">
+                <i class="fas fa-ship" style="color: #888; margin-bottom: 5px;"></i><br>
+                <span style="font-weight: bold; color: #555;">回碼頭返回香港</span>
+                <div style="margin-top: 5px; font-size: 0.8rem; color: #999;">喵~ 記得帶伴手禮喔！</div>
             </div>
         </div>
 
     </div>
 
     <div class="footer">
-        Created for your Macau Trip • 祝旅途愉快
+        <i class="fas fa-paw"></i> 祝你有個溫暖的旅程 <i class="fas fa-paw"></i>
     </div>
 </div>
 
