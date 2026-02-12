@@ -1,31 +1,895 @@
-import React from "react";
-import Map from "./Map";
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>澳門一日遊</title>
 
-function Card({ icon, name, desc, transitLink, taxiLink, lat, lng }) {
-  return (
-    <div className="card">
-      <div className="card-icon-box">
-        <i className={icon}></i>
-      </div>
-      <div className="card-content">
-        <span className="card-name">{name}</span>
-        <span className="card-desc">{desc}</span>
-      </div>
-      <div className="nav-actions">
-        {transitLink && (
-          <a className="nav-btn btn-transit" href={transitLink} target="_blank" rel="noopener">
-            <i className="fas fa-train-subway"></i> 大眾運輸
-          </a>
-        )}
-        {taxiLink && (
-          <a className="nav-btn btn-taxi" href={taxiLink} target="_blank" rel="noopener">
-            <i className="fas fa-taxi"></i> 計程車
-          </a>
-        )}
-      </div>
-      {lat && lng && <Map lat={lat} lng={lng} name={name} />}
+    <!-- 正確 Font Awesome CDN（icon 顯示依賴這一行） -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Zen+Maru+Gothic:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #fdfbf7;
+            --paper-color: #fffefb;
+            --primary-color: #e69b5c;   /* 貓咪橘 */
+            --secondary-color: #8d6e63; /* 咖啡色 */
+            --accent-blue: #7da7d9;
+            --accent-pink: #f0aeb9;
+            --text-color: #5d4037;
+            --line-color: #eaddcf;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', 'Noto Serif TC', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            /* 貓掌背景紋理 */
+            background-image:
+                radial-gradient(#e8e4dc 15%, transparent 16%),
+                radial-gradient(#e8e4dc 15%, transparent 16%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;            /* 手機閱讀最佳寬度 */
+            background: var(--paper-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(93, 64, 55, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 6px solid #fff;
+            outline: 1px dashed #d7ccc8;
+        }
+
+        /* ===== B 版封面：放在 container 裡 ===== */
+        .cover {
+            margin-bottom: 16px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 6px solid #fff;
+            outline: 1px dashed #d7ccc8;
+            box-shadow: 0 8px 24px rgba(93,64,55,0.08);
+            background: #fffefb;
+        }
+
+        .cover img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 4 / 3;   /* 依插畫調整比例 */
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* 頂部貓咪裝飾 */
+        .header-cat {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: -10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%   { transform: translateY(0px) rotate(0deg); }
+            50%  { transform: translateY(-5px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin: 10px 0 5px 0;
+            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            opacity: 0.8;
+            border-bottom: 2px dotted var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Timeline Layout */
+        .timeline {
+            position: relative;
+            padding-left: 20px; /* 手機版縮減左側空間 */
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 10px;
+            bottom: 10px;
+            width: 3px;
+            background: repeating-linear-gradient(
+                to bottom,
+                var(--line-color) 0,
+                var(--line-color) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            border-radius: 2px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .time-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-left: 10px;
+            color: var(--text-color);
+        }
+
+        /* 貓咪插圖貼紙（角落裝飾） */
+        .cat-sticker {
+            position: absolute;
+            font-size: 2.5rem;
+            z-index: 1;
+            opacity: 0.9;
+            filter: drop-shadow(2px 2px 0px rgba(255,255,255,1));
+        }
+
+        /* Cards Grid - 手機優先設計 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* 手機預設單欄 */
+            gap: 12px;
+            margin-left: 5px;
+        }
+
+        .card {
+            background: #fff;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;              /* 橫向佈局 */
+            align-items: center;
+            transition: transform 0.2s, border-color 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            position: relative;
+            gap: 10px;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+        }
+
+        .card-icon-box {
+            width: 40px;
+            height: 40px;
+            background: #fff8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .card-content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .card-name {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 2px;
+            display: block;
+            color: #444;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.3;
+        }
+
+        /* 景點插畫：日系貼紙風（略放大版） */
+        .spot-illust {
+            width: 200px;             /* 比原來大一些，更清楚 */
+            height: 150.5px;          /* 4:3 比例：90 * 0.75 */
+            border-radius: 14px;
+            object-fit: cover;
+            flex-shrink: 0;
+
+            background-color: #fff;
+            border: 3px solid #fff;               /* 白邊貼紙感 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.14);
+
+            transform: rotate(-1.5deg);           /* 微微歪一點，像貼紙 */
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .card:hover .spot-illust {
+            transform: rotate(0deg) translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+        }
+
+        /* ===== 導航按鈕（大眾運輸 & 計程車） ===== */
+        .nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-left: auto;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn i {
+            font-size: 0.8rem;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.98) saturate(1.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .nav-btn:focus-visible {
+            outline: 2px solid #333;
+            outline-offset: 2px;
+        }
+
+        /* 依照段落換主色（大眾運輸 / 計程車） */
+        .morning .btn-transit { background: var(--accent-blue); }
+        .morning .btn-taxi    { background: #3b82f6; }
+        .noon .btn-transit    { background: var(--primary-color); }
+        .noon .btn-taxi       { background: #d97706; }
+        .night .btn-transit   { background: var(--accent-pink); color:#5d4037; font-weight: 800; }
+        .night .btn-taxi      { background: #ec4899; }
+
+        /* Specific Colors & Icons */
+        .morning .time-badge { background-color: var(--accent-blue); }
+        .morning .card-icon-box { color: var(--accent-blue); background: #f0f7ff; }
+        
+        .noon .time-badge { background-color: var(--primary-color); }
+        .noon .card-icon-box { color: var(--primary-color); background: #fff5eb; }
+
+        .night .time-badge { background-color: var(--accent-pink); }
+        .night .card-icon-box { color: var(--accent-pink); background: #fff0f2; }
+
+        /* Path Connector (Paw Prints) */
+        .path-connector {
+            text-align: center;
+            color: var(--line-color);
+            font-size: 1rem;
+            margin: 15px 0;
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .paw {
+            color: var(--secondary-color);
+            opacity: 0.3;
+            font-size: 0.8rem;
+            transform: rotate(15deg);
+        }
+
+        .paw:nth-child(even) { transform: rotate(-15deg); margin-left: 10px; }
+        .paw:nth-child(odd) { margin-right: 10px; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #eee;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* ===== Lightbox 放大圖 ===== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;                 /* 預設不顯示 */
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background: #fffefb;
+            border-radius: 18px;
+            padding: 16px 18px 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            max-width: 90vw;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: 16px;
+            object-fit: contain;
+            background: #fff;
+            border: 4px solid #fff;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        .lightbox-title {
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            border: none;
+            background: transparent;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #bbb;
+            padding: 4px;
+        }
+
+        .lightbox-close:hover {
+            color: #888;
+        }
+
+        /* Media Query for Tablet/Desktop */
+        @media (min-width: 600px) {
+            .container { padding: 40px; }
+            .cards-grid { grid-template-columns: 1fr 1fr; } /* 電腦版雙欄 */
+
+            .card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .card-icon-box {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .card-full-width {
+                grid-column: span 2;
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .card-full-width .card-icon-box {
+                margin-right: 15px;
+                margin-bottom: 0;
+            }
+
+            .nav-actions {
+                flex-direction: row;
+                margin-left: 0;
+                margin-top: 10px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 封面（B 版） -->
+    <div class="cover" aria-label="澳門一日遊封面">
+        <img src="Banner.png" alt="澳門一日遊封面插畫" loading="lazy" />
     </div>
-  );
-}
 
-export default Card;
+    <!-- Header Cat -->
+    <div class="header-cat">
+        <i class="fas fa-cat" aria-hidden="true"></i>
+    </div>
+    
+    <h1>澳門一日遊</h1>
+    <div class="subtitle">跟著貓咪去散步 • Neko Trip</div>
+
+    <div class="timeline">
+        
+        <!-- Morning Section -->
+        <div class="section morning">
+            <!-- 裝飾貓：伸懶腰 -->
+            <div class="cat-sticker" style="top: -15px; right: 10px; transform: rotate(10deg); color: var(--accent-blue);">
+                <i class="fas fa-cat" aria-hidden="true"></i>
+            </div>
+
+            <div class="section-header">
+                <span class="time-badge">AM 上午</span>
+                <span class="section-title">歷史城區散策</span>
+            </div>
+
+            <div class="cards-grid">
+
+                <!-- 外港碼頭 -->
+                <div class="card"
+                     onclick="openLightbox('images/am-ferry.png', '外港碼頭')"
+                     style="cursor: pointer;">
+                    <div class="card-icon-box">
+                        <i class="fas fa-ship" aria-hidden="true"></i>
+                    </div>
+
+                    <!-- 插畫貼紙 -->
+                    <img src="images/am-ferry.png"
+                         alt="外港碼頭插畫"
+                         class="spot-illust"
+                         loading="lazy" />
+
+                    <div class="card-content">
+                        <span class="card-name">外港碼頭</span>
+                        <span class="card-desc">抵達澳門</span>
+                    </div>
+
+                    <div class="nav-actions">
+                        <!-- 大眾運輸 -->
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門外港客運碼頭&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <!-- 計程車 -->
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門外港客運碼頭&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 新葡京 -->
+                <div class="card"
+                     onclick="openLightbox('images/am-lisboa.png', '新葡京')"
+                     style="cursor: pointer;">
+                    <div class="card-icon-box">
+                        <i class="fas fa-spa" aria-hidden="true"></i>
+                    </div>
+
+                    <img src="images/am-lisboa.png"
+                         alt="新葡京插畫"
+                         class="spot-illust"
+                         loading="lazy" />
+
+                    <div class="card-content">
+                        <span class="card-name">新葡京</span>
+                        <span class="card-desc">金蓮花地標</span>
+                    </div>
+
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=新葡京&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=新葡京&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 玫瑰聖母堂 -->
+                <div class="card"
+                     onclick="openLightbox('images/am-rose-church.png', '玫瑰聖母堂')"
+                     style="cursor: pointer;">
+                    <div class="card-icon-box">
+                        <i class="fas fa-church" aria-hidden="true"></i>
+                    </div>
+
+                    <img src="images/am-rose-church.png"
+                         alt="玫瑰聖母堂插畫"
+                         class="spot-illust"
+                         loading="lazy" />
+
+                    <div class="card-content">
+                        <span class="card-name">玫瑰聖母堂</span>
+                        <span class="card-desc">鵝黃色教堂</span>
+                    </div>
+
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=玫瑰聖母堂%20澳門&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=玫瑰聖母堂%20澳門&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 大三巴 & 戀愛巷 -->
+                <div class="card"
+                     onclick="openLightbox('images/am-ruins-love-lane.png', '大三巴 &amp; 戀愛巷')"
+                     style="cursor: pointer;">
+                    <div class="card-icon-box">
+                        <i class="fas fa-archway" aria-hidden="true"></i>
+                    </div>
+
+                    <img src="images/am-ruins-love-lane.png"
+                         alt="大三巴與戀愛巷插畫"
+                         class="spot-illust"
+                         loading="lazy" />
+
+                    <div class="card-content">
+                        <span class="card-name">大三巴 &amp; 戀愛巷</span>
+                        <span class="card-desc">必拍牌坊與粉紅巷</span>
+                    </div>
+
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=大三巴牌坊&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=大三巴牌坊&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+            <span style="font-size: 0.7rem; color: #999;">前往氹仔</span>
+        </div>
+
+        <!-- Noon Section -->
+        <div class="section noon">
+            <!-- 裝飾貓：貪吃貓 -->
+            <div class="cat-sticker" style="top: 0px; right: 0px; transform: rotate(-10deg); color: var(--primary-color);">
+                <i class="fas fa-fish" aria-hidden="true"></i>
+                <i class="fas fa-cat" style="font-size: 0.8em;" aria-hidden="true"></i>
+            </div>
+
+            <div class="section-header">
+                <span class="time-badge">PM 午餐</span>
+                <span class="section-title">官也街覓食</span>
+            </div>
+
+            <div class="cards-grid">
+                <!-- 官也街（美食清單） -->
+                <div class="card card-full-width">
+                    <div class="card-icon-box">
+                        <i class="fas fa-utensils" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">美食清單</span>
+                        <span class="card-desc">
+                            • 葡式蛋塔 (安德魯 / 瑪嘉烈)<br>
+                            • 大利來記豬扒包<br>
+                            • 誠昌飯店水蟹粥
+                        </span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=官也街&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=官也街&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+            <span style="font-size: 0.7rem; color: #999;">前往路氹</span>
+        </div>
+
+        <!-- Night Section -->
+        <div class="section night">
+            <!-- 裝飾貓：看夜景 -->
+            <div class="cat-sticker" style="top: -10px; right: 20px; color: var(--accent-pink);">
+                <i class="fas fa-moon" style="font-size: 0.6em; margin-right:5px;" aria-hidden="true"></i>
+                <i class="fas fa-cat" aria-hidden="true"></i>
+            </div>
+
+            <div class="section-header">
+                <span class="time-badge">PM 晚上</span>
+                <span class="section-title">奢華酒店巡禮</span>
+            </div>
+
+            <div class="cards-grid">
+                <!-- 威尼斯人 -->
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-gopuram" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">威尼斯人</span>
+                        <span class="card-desc">運河與貢多拉</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門威尼斯人&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門威尼斯人&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 巴黎人 -->
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-broadcast-tower" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">巴黎人</span>
+                        <span class="card-desc">鐵塔燈光秀</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門巴黎人&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門巴黎人&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 倫敦人 -->
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">倫敦人</span>
+                        <span class="card-desc">英倫大笨鐘</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門倫敦人&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=澳門倫敦人&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 永利皇宮 -->
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-tram" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">永利皇宮</span>
+                        <span class="card-desc">免費纜車</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=永利皇宮%20澳門&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=永利皇宮%20澳門&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 美高梅 -->
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-gem" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-name">美高梅</span>
+                        <span class="card-desc">珠寶盒建築</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a class="nav-btn btn-transit"
+                           href="https://www.google.com/maps/dir/?api=1&destination=美獅美高梅%20澳門&travelmode=transit"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-train-subway" aria-hidden="true"></i><span>大眾運輸</span>
+                        </a>
+                        <a class="nav-btn btn-taxi"
+                           href="https://www.google.com/maps/dir/?api=1&destination=美獅美高梅%20澳門&travelmode=driving"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fas fa-taxi" aria-hidden="true"></i><span>計程車</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="path-connector">
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+            <i class="fas fa-paw paw" aria-hidden="true"></i>
+        </div>
+
+        <!-- End Section -->
+        <div class="section">
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; text-align: center; border: 2px dashed #ddd;">
+                <i class="fas fa-ship" style="color: #888; margin-bottom: 5px;" aria-hidden="true"></i><br>
+                <span style="font-weight: bold; color: #555;">回碼頭返回香港</span>
+                <div style="margin-top: 5px; font-size: 0.8rem; color: #999;">喵~ 記得帶伴手禮喔！</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-paw" aria-hidden="true"></i> 祝你有個溫暖的旅程 <i class="fas fa-paw" aria-hidden="true"></i>
+    </div>
+</div>
+
+<!-- Lightbox：點卡片放大景點插畫 -->
+<div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <button class="lightbox-close" type="button" onclick="closeLightbox()">
+            &times;
+        </button>
+        <img id="lightbox-img" class="lightbox-img" src="" alt="景點放大圖" />
+        <div id="lightbox-title" class="lightbox-title"></div>
+    </div>
+</div>
+
+<script>
+  function openLightbox(imgSrc, title) {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      const lbTitle = document.getElementById('lightbox-title');
+
+      lbImg.src = imgSrc;
+      lbImg.alt = title;
+      lbTitle.textContent = title;
+      lb.classList.add('open');
+  }
+
+  function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('open');
+  }
+
+  // 點擊遮罩（黑色背景）關閉 Lightbox
+  document.getElementById('lightbox').addEventListener('click', function (e) {
+      if (e.target === this) {
+          closeLightbox();
+      }
+  });
+
+  // 點導航按鈕時不要觸發 card 的 onclick
+  document.addEventListener('DOMContentLoaded', function () {
+      const navBtns = document.querySelectorAll('.nav-btn');
+      navBtns.forEach(btn => {
+          btn.addEventListener('click', function (e) {
+              e.stopPropagation();
+          });
+      });
+  });
+</script>
+
+</body>
+</html>
